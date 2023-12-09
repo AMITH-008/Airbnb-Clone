@@ -2,10 +2,11 @@ import React from 'react'
 import { FaAirbnb, FaUserCircle } from "react-icons/fa"
 import { CiSearch } from "react-icons/ci";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <header className='p-4 flex justify-between'>
+    <header className=' flex justify-between'>
         <a href="" className='flex gap-2 items-center'>
             <FaAirbnb className='w-8 h-6'/>
             <span className='font-bold text-xl'>Air</span>
@@ -20,10 +21,10 @@ const Header = () => {
                 <CiSearch className='h-4 w-4' />
             </button>
         </div>
-        <div className='flex gap-2 items-center border border-gray-400 rounded-full py-2 px-4'>
+        <Link to={"/login"} className='flex gap-2 items-center border border-gray-400 rounded-full py-2 px-4'>
           <GiHamburgerMenu className='text-sm' />
           <FaUserCircle className='text-2xl'/>
-        </div>
+        </Link>
     </header>
   )
 }
