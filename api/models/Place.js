@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const PlaceSchema = new mongoose.Schema({
+    ownner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    },
     title: {
         type:String,
 
