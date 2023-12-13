@@ -8,6 +8,7 @@ import { FaCar } from "react-icons/fa6";
 import { MdOutlineFastfood } from "react-icons/md";
 import { FaDisplay } from "react-icons/fa6";
 import { MdPool } from "react-icons/md";
+import Perks from '../Perks';
 
 
 
@@ -59,12 +60,12 @@ const PlacesPage = () => {
         <div>
           <form>
             {preInput("Title","Title For Your Place, should be catchy")}
-            <input type='text' placeholder='title' />
+            <input type='text' placeholder='title' value={title} onChange={ev => setTitle(ev.target.value)} />
             {preInput("Address", "Address to this place")}
-            <input type="text" placeholder='address' />
+            <input type="text" placeholder='address' value={address} onChange={e => setAddress(e.target.value)} />
             {preInput("Photos", "Pictures speak more than words")}
             <div className='flex gap-2'>
-              <input type="text" placeholder='Add Using a link.....' />
+              <input type="text" placeholder='Add Using a link.....' value={photoLink} onChange={e => setPhotoLink(e.target.value)}/>
               <button className='bg-gray-300 grow px-4 rounded-2xl'>Add&nbsp;Photo</button>
             </div>
             <div className='grid grid-cols-3 lg:grid-cols-6 md:grid-cols-4 mt-2'>
@@ -77,36 +78,7 @@ const PlacesPage = () => {
             <textarea  />
             {preInput("Perks","Select all the perks available at your place")}
             <div className='grid gap-2 mt-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-              <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type='checkbox' />
-                <FaWifi />
-                <span>Free Wifi</span>
-              </label> 
-              <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type='checkbox' />
-                <GiShower />
-                <span>Hot Water</span>
-              </label>
-              <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type='checkbox' />
-                <FaCar />
-                <span>Free Parking Spot</span>
-              </label>
-              <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type='checkbox' />
-                <MdOutlineFastfood />
-                <span>Dining</span>
-              </label>
-              <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type='checkbox' />
-                <FaDisplay />
-                <span>TV</span>
-              </label>
-              <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type='checkbox' />
-                <MdPool />
-                <span>Pool</span>
-              </label>
+              <Perks selected={perks} onChange={setPerks} />
             </div>
             {preInput("Extra Info", "House Rules, Ambience")}
             <textarea />
