@@ -6,6 +6,14 @@ import User from './models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser'
+import download from 'image-downloader'
+import {dirname} from 'path'
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url)
+
+const __dirname = dirname(__filename);
 
 
 const app = express();
@@ -95,6 +103,19 @@ app.get('/profile', (request, response) => {
 
 app.post('/logout', (request, response) => {
     response.cookie('bookapp', '').json(true);
+})
+
+app.post('/uploadPhotoByLink', (request, response) => {
+
+    const link = request.body.link;
+    console.log(link);
+    const newName = Date.now() + '.jpg';
+    download.image({
+        url:link,
+        dest: __dirname+'/uploads/'+newName,
+        timeout:10000
+    })
+
 })
 
 app.listen(3000, () => {

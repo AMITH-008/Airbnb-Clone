@@ -1,4 +1,10 @@
 import React from 'react'
+import { FaWifi } from "react-icons/fa";
+import { GiFoodChain, GiShower } from "react-icons/gi";
+import { FaCar } from "react-icons/fa6";
+import { MdOutlineFastfood } from "react-icons/md";
+import { FaDisplay } from "react-icons/fa6";
+import { MdPool } from "react-icons/md";
 
 const Perks = ({selected, onChange}) => {
   return (
