@@ -28,6 +28,8 @@ app.use(cookieParser())
 
 app.use(express.json());
 
+app.use('/uploads', express.static(__dirname+'/uploads'));
+
 app.get('/', (request, response) => {
     response.send("Hello World");
 });
@@ -105,17 +107,17 @@ app.post('/logout', (request, response) => {
     response.cookie('bookapp', '').json(true);
 })
 
-app.post('/uploadPhotoByLink', (request, response) => {
+app.post('/uploadPhotoByLink', async (request, response) => {
 
     const link = request.body.link;
     console.log(link);
-    const newName = Date.now() + '.jpg';
-    download.image({
+    const newName = "img"+Date.now() + '.jpg';
+    await download.image({
         url:link,
         dest: __dirname+'/uploads/'+newName,
         timeout:10000
-    })
-
+    });
+    response.status(200).json({newName});
 })
 
 app.listen(3000, () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
 import { FaCloudUploadAlt } from "react-icons/fa";
@@ -20,6 +20,8 @@ const PlacesPage = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut , setCheckOut] = useState('');
   const [maxGuests, setMaxGuests] = useState(1);
+  const [buttonStatus, setButtonStatus] = useState(false);
+  const fileRef = useRef(null);
 
   const inputHeader = (text) => {
     return (<h2 className='text-2xl mt-4 ml-2 font-bold'>{text}</h2>)
@@ -39,9 +41,19 @@ const PlacesPage = () => {
   }
 
   const addPhotoByLink = async ( ) => {
-    await axios.post('/uploadPhotoByLink', {
+    const {data:filename} = await axios.post('/uploadPhotoByLink', {
       link: photoLink
-    })
+    });
+    console.log(filename['newName']);
+    setAddedPhotos(prev => {
+      return [...prev, filename['newName']];
+    });
+    setPhotoLink("");
+  }
+
+  const uploadPhotoFromDevice = (e) => {
+    const files = e.target.files;
+    console.log({files})
   }
 
   console.log(action);
@@ -70,14 +82,29 @@ const PlacesPage = () => {
             {preInput("Photos", "Pictures speak more than words")}
             <div className='flex gap-2'>
               <input 
-                type="text" placeholder='Add Using a link.....' value={photoLink} onChange={e => setPhotoLink(e.target.value)}/>
-              <button type='button' className='bg-gray-300 grow px-4 rounded-2xl' onClick={addPhotoByLink}>Add&nbsp;Photo</button>
+                type="text" placeholder='Add Using a link.....' value={photoLink} onChange={e => {
+                  console.log(e.target.value.length);
+                  if(e.target.value.length > 0) {
+                    setButtonStatus(true);
+                  }else {
+                    setButtonStatus(false);
+                  }
+                  setPhotoLink(e.target.value);
+                }}/>
+              <button type='button' className='bg-gray-300 grow px-4 rounded-2xl' disabled={!buttonStatus} onClick={addPhotoByLink}>Add&nbsp;Photo</button>
             </div>
-            <div className='grid grid-cols-3 lg:grid-cols-6 md:grid-cols-4 mt-2'>
-              <button className='flex gap-2 justify-center items-center border bg-transparent rounded-full py-2 px-4 mt-2'>
+            
+            <div className='grid grid-cols-3 gap-2 items-center lg:grid-cols-6 md:grid-cols-4 mt-2'>
+              {addedPhotos.length > 0 && addedPhotos.map(pic => (
+                <div>
+                  <img className='rounded-2xl ' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
+                </div>
+              ))}
+              <label className='flex gap-2 justify-center items-center border bg-transparent rounded-full p-4  mt-2 cursor-pointer'>
                 <FaCloudUploadAlt  className='font-extrabold text-xl w-5 h-5' />
+                <input type='file' className='hidden'  onChange={uploadPhotoFromDevice} />
                 Upload
-              </button>
+              </label>
             </div>
             {preInput("Description", "Describe About the place ... like Elgeant etc.")}
             <textarea value={description} onChange={e=> setDescription(e.target.value)}  />
