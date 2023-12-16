@@ -117,7 +117,7 @@ const PlacesPage = () => {
               ))}
               <label className='flex gap-2 justify-center items-center border bg-transparent rounded-full p-4  mt-2 cursor-pointer'>
                 <FaCloudUploadAlt  className='font-extrabold text-xl w-5 h-5' />
-                <input type='file' className='hidden'  onChange={uploadPhotoFromDevice} />
+                <input type='file' multiple className='hidden'  onChange={uploadPhotoFromDevice} />
                 Upload
               </label>
             </div>
