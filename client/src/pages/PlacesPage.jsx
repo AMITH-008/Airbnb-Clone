@@ -1,10 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, {  useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
-import { FaCloudUploadAlt } from "react-icons/fa";
-
 import Perks from '../Perks';
-import axios from 'axios'
+import PhotosUploader from '../components/PhotosUploader';
 
 
 
@@ -12,16 +10,13 @@ const PlacesPage = () => {
   const {action} = useParams();
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
-  const [addedPhotos, setAddedPhotos] = useState([]);
-  const [photoLink, setPhotoLink] = useState('');
   const [description, setDescription] = useState('');
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfoe] = useState('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut , setCheckOut] = useState('');
   const [maxGuests, setMaxGuests] = useState(1);
-  const [buttonStatus, setButtonStatus] = useState(false);
-  const fileRef = useRef(null);
+  
 
   const inputHeader = (text) => {
     return (<h2 className='text-2xl mt-4 ml-2 font-bold'>{text}</h2>)
@@ -40,36 +35,7 @@ const PlacesPage = () => {
     )
   }
 
-  const addPhotoByLink = async ( ) => {
-    const {data:filename} = await axios.post('/uploadPhotoByLink', {
-      link: photoLink
-    });
-    console.log(filename['newName']);
-    setAddedPhotos(prev => {
-      return [...prev, filename['newName']];
-    });
-    setPhotoLink("");
-  }
-
-  const uploadPhotoFromDevice = async (e) => {
-    try{
-      const files = e.target.files;
-      const uploadData = new FormData();
-      for(let i=0;i<files.length;i++) {
-        uploadData.append('photos', files[i]);
-      }
-      const {data} = await axios.post("/uploadPhotos",uploadData, {
-        headers: {
-          'Content-Type':'multipart/form-data'
-        }
-      });
-      setAddedPhotos(prev => [...prev, ...data]);
-    }catch(err) {
-      console.log(err);
-      alert("Upload Failed, Try Again");
-    }
-    
-  }
+  
 
   console.log(action);
   return (
@@ -95,32 +61,7 @@ const PlacesPage = () => {
             <input 
               type="text" placeholder='address' value={address} onChange={e => setAddress(e.target.value)} />
             {preInput("Photos", "Pictures speak more than words")}
-            <div className='flex gap-2'>
-              <input 
-                type="text" placeholder='Add Using a link.....' value={photoLink} onChange={e => {
-                  console.log(e.target.value.length);
-                  if(e.target.value.length > 0) {
-                    setButtonStatus(true);
-                  }else {
-                    setButtonStatus(false);
-                  }
-                  setPhotoLink(e.target.value);
-                }}/>
-              <button type='button' className='bg-gray-300 grow px-4 rounded-2xl' disabled={!buttonStatus} onClick={addPhotoByLink}>Add&nbsp;Photo</button>
-            </div>
-            
-            <div className='grid grid-cols-3 gap-2 items-center lg:grid-cols-6 md:grid-cols-4 mt-2'>
-              {addedPhotos.length > 0 && addedPhotos.map(pic => (
-                <div className='h-32 flex'>
-                  <img className='rounded-2xl w-full object-cover' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
-                </div>
-              ))}
-              <label className='flex h-32 gap-2 justify-center items-center border bg-transparent rounded-full p-4  mt-2 cursor-pointer'>
-                <FaCloudUploadAlt  className='font-extrabold text-xl w-5 h-5' />
-                <input type='file' multiple className='hidden'  onChange={uploadPhotoFromDevice} />
-                Upload
-              </label>
-            </div>
+            <PhotosUploader />
             {preInput("Description", "Describe About the place ... like Elgeant etc.")}
             <textarea value={description} onChange={e=> setDescription(e.target.value)}  />
             {preInput("Perks","Select all the perks available at your place")}
