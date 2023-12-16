@@ -111,11 +111,11 @@ const PlacesPage = () => {
             
             <div className='grid grid-cols-3 gap-2 items-center lg:grid-cols-6 md:grid-cols-4 mt-2'>
               {addedPhotos.length > 0 && addedPhotos.map(pic => (
-                <div>
-                  <img className='rounded-2xl ' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
+                <div className='h-32 flex'>
+                  <img className='rounded-2xl w-full object-cover' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
                 </div>
               ))}
-              <label className='flex gap-2 justify-center items-center border bg-transparent rounded-full p-4  mt-2 cursor-pointer'>
+              <label className='flex h-32 gap-2 justify-center items-center border bg-transparent rounded-full p-4  mt-2 cursor-pointer'>
                 <FaCloudUploadAlt  className='font-extrabold text-xl w-5 h-5' />
                 <input type='file' multiple className='hidden'  onChange={uploadPhotoFromDevice} />
                 Upload

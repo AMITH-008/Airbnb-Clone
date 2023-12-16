@@ -10,6 +10,7 @@ import download from 'image-downloader'
 import {dirname} from 'path'
 import { fileURLToPath } from 'url';
 import multer from 'multer';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url)
 
@@ -127,8 +128,8 @@ app.post('/uploadPhotos', photosMiddleware.array("photos", 40),(request, respons
     for(let i=0;i<files.length;i++) {
         data[i] = files[i].filename;
     }
-    response.status(200).json(data);
     console.log(data);
+    response.status(200).json(data);
 })
 
 app.listen(3000, () => {
