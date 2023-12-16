@@ -10,7 +10,7 @@ import download from 'image-downloader'
 import {dirname} from 'path'
 import { fileURLToPath } from 'url';
 import multer from 'multer';
-import fs from 'fs';
+import Place from './models/Place.js'
 
 const __filename = fileURLToPath(import.meta.url)
 
@@ -130,6 +130,41 @@ app.post('/uploadPhotos', photosMiddleware.array("photos", 40),(request, respons
     }
     console.log(data);
     response.status(200).json(data);
+});
+
+app.post("/places", (request, response) => {
+
+    const {bookapp} = request.cookies;
+    const {title,
+        address,
+        description,
+        extraInfo,
+        checkIn,checkOut,
+        maxGuests,
+        perks, addedPhotos } = request.body;
+    if(bookapp) {
+        jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
+            if(err) {
+                throw err;
+            }
+            const placeDoc = await Place.create({
+                ownner:user.id,
+                title: title,
+                address: address,
+                description: description,
+                extraInformation:extraInfo,
+                perks: perks,
+                checkIn: checkIn,
+                checkOut: checkOut,
+                maxGuests: maxGuests,
+                pics: addedPhotos
+            })
+            response.json(placeDoc);
+        })
+    } else {
+        response.json(null);
+    }
+    
 })
 
 app.listen(3000, () => {

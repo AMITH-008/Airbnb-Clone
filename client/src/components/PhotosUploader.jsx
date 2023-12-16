@@ -2,9 +2,9 @@ import React, {  useState } from 'react'
 import { FaCloudUploadAlt } from "react-icons/fa";
 import axios from 'axios';
 
-const PhotosUploader = () => {
+const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
 
-    const [addedPhotos, setAddedPhotos] = useState([]);
+    
     const [photoLink, setPhotoLink] = useState('');
     const [buttonStatus, setButtonStatus] = useState(false);
 

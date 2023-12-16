@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../UserContext'
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import PlacesPage from './PlacesPage';
-import { CiUser } from "react-icons/ci";
-import { FiList } from "react-icons/fi";
-import { MdPlace } from "react-icons/md";
+import AccountNavPage from './AccountNavPage';
+
 
 
 const AccountPage = () => {
@@ -28,18 +27,6 @@ const AccountPage = () => {
     
     console.log(subpage);
 
-    const linkClasses = (type=null) => {
-        let classes = "py-2 px-6 inline-flex gap-1 items-center rounded-full cursor-pointer";
-        console.log(type);
-        console.log(subpage);
-        if (type === subpage) {
-            classes += " bg-primary text-white"
-        } else {
-            classes += " bg-gray-200"
-        }
-        console.log(classes);
-        return classes;
-    }
 
     const logout = async () => {
         await axios.post('/logout');
@@ -56,20 +43,7 @@ const AccountPage = () => {
     }
   return (
     <div>
-        <nav className='w-full flex mt-8 gap-2 justify-center mb-8'>
-            <Link className={linkClasses('profile')} to="/account">
-                <CiUser />
-                My Profile
-            </Link>
-            <Link className={linkClasses('bookings')} to="/account/bookings">
-                <FiList />
-                My Bookings
-            </Link>
-            <Link className={linkClasses('places')} to="/account/places">
-                <MdPlace />
-                My Accomodations
-            </Link>
-        </nav>
+        <AccountNavPage />
         {
             subpage === 'profile' && (
             <div className='max-w-lg mx-auto text-center'>
