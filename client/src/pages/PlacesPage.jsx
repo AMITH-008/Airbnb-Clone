@@ -51,9 +51,24 @@ const PlacesPage = () => {
     setPhotoLink("");
   }
 
-  const uploadPhotoFromDevice = (e) => {
-    const files = e.target.files;
-    console.log({files})
+  const uploadPhotoFromDevice = async (e) => {
+    try{
+      const files = e.target.files;
+      const uploadData = new FormData();
+      for(let i=0;i<files.length;i++) {
+        uploadData.append('photos', files[i]);
+      }
+      const {data} = await axios.post("/uploadPhotos",uploadData, {
+        headers: {
+          'Content-Type':'multipart/form-data'
+        }
+      });
+      setAddedPhotos(prev => [...prev, ...data]);
+    }catch(err) {
+      console.log(err);
+      alert("Upload Failed, Try Again");
+    }
+    
   }
 
   console.log(action);

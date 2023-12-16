@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { response } from 'express'
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser'
 import download from 'image-downloader'
 import {dirname} from 'path'
 import { fileURLToPath } from 'url';
-
+import multer from 'multer';
 
 const __filename = fileURLToPath(import.meta.url)
 
@@ -118,6 +118,17 @@ app.post('/uploadPhotoByLink', async (request, response) => {
         timeout:10000
     });
     response.status(200).json({newName});
+});
+
+const photosMiddleware = multer({dest:'uploads/'})
+app.post('/uploadPhotos', photosMiddleware.array("photos", 40),(request, response) => {
+    const files = request.files;
+    const data = Array();
+    for(let i=0;i<files.length;i++) {
+        data[i] = files[i].filename;
+    }
+    response.status(200).json(data);
+    console.log(data);
 })
 
 app.listen(3000, () => {
