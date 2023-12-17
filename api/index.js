@@ -177,6 +177,48 @@ app.get('/myPlaces', (request, response) => {
     }
 });
 
+
+app.get('/places/:id', async (request, response)=> {
+    const {id} = request.params;
+    response.status(200).json(await Place.findById(id));
+});
+
+app.put('/places/:id', async (request, response) => {
+
+    const {bookapp} = request.cookies;
+    const {id} = request.params;
+    const {title,
+        address,
+        description,
+        extraInfo,
+        checkIn,checkOut,
+        maxGuests,
+        perks, addedPhotos } = request.body;
+    if(bookapp) {
+        jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
+            if(err) {
+                throw err;
+            }
+            const placeDoc = await Place.findByIdAndUpdate(id,{
+                ownner:user.id,
+                title: title,
+                address: address,
+                description: description,
+                extraInformation:extraInfo,
+                perks: perks,
+                checkIn: checkIn,
+                checkOut: checkOut,
+                maxGuests: maxGuests,
+                pics: addedPhotos
+            })
+            response.json(placeDoc);
+        })
+    } else {
+        response.json(null);
+    }
+
+})
+
 app.listen(3000, () => {
     console.log("Server up and running on port 3000");
 })

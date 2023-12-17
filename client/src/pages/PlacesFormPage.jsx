@@ -5,6 +5,9 @@ import AccountNavPage from './AccountNavPage';
 import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
+import { useContext } from 'react';
+import { UserContext } from '../UserContext';
+
 const PlacesFormPage = () => {
 
     const {id} = useParams();
@@ -19,9 +22,30 @@ const PlacesFormPage = () => {
     const [maxGuests, setMaxGuests] = useState(1);
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [redirect,setRedirect] = useState(false);
+    const [editable, setEditable] = useState(true);
 
+    const {user} = useContext(UserContext);
+    
+    
     useEffect(()=> {
       if(id !== undefined) {
+        const fetchPlace = async () => {
+          const {data} = await axios.get("/places/"+id);
+          console.log(data);
+          setTitle(data.title);
+          setAddress(data.address);
+          setCheckIn(data.checkIn);
+          setCheckOut(data.checkOut);
+          setDescription(data.description);
+          setExtraInfoe(data.extraInformation);
+          setMaxGuests(data.maxGuests);
+          setPerks(data.perks);
+          setAddedPhotos(data.pics);
+          if(data.ownner !== user._id.toString()) {
+            setEditable(false);
+          }
+        }
+        fetchPlace();
         
       }
     }, [id]);
@@ -43,8 +67,25 @@ const PlacesFormPage = () => {
     return (<p className='text-gray-400 text-sm ml-2'>{description}</p>)
     }
 
-    const addNewPlace = async (e) => {
+    const savePlace = async (e) => {
         e.preventDefault();
+
+        if(id !== undefined) {
+          const placeData = {
+            title,
+            address,
+            description,
+            extraInfo,
+            checkIn,checkOut,
+            maxGuests,
+            perks,
+            addedPhotos
+          }
+          const {data} = await axios.put("/places/"+id, placeData);
+          console.log(data);
+          setRedirect(true);
+          return;
+        }
         const placeData = {
           title,
           address,
@@ -69,12 +110,12 @@ const PlacesFormPage = () => {
     <>
     <div>
         <AccountNavPage />
-        <form onSubmit={addNewPlace}>
+        <form onSubmit={savePlace}>
         {preInput("Title","Title For Your Place, should be catchy")}
-        <input 
+        <input readOnly={true && !editable} 
             type='text' placeholder='title' value={title} onChange={ev => setTitle(ev.target.value)} />
         {preInput("Address", "Address to this place")}
-        <input 
+        <input readOnly={true && !editable} 
             type="text" placeholder='address' value={address} onChange={e => setAddress(e.target.value)} />
         {preInput("Photos", "Pictures speak more than words")}
         <PhotosUploader addedPhotos={addedPhotos} setAddedPhotos={setAddedPhotos}  />
@@ -91,22 +132,22 @@ const PlacesFormPage = () => {
         <div className='grid gap-2 sm:grid-cols-3'>
             <div>
             <h3 className='mt-2 ml-2 -mb-1'>Check-In</h3>
-            <input 
+            <input readOnly={true && !editable} 
                 type="text" placeholder='24hr format' value={checkIn} onChange={e=> setCheckIn(e.target.value)} />
             </div>
             <div>
             <h3 className='mt-2 ml-2 -mb-1'>Check-Out</h3>
-            <input 
+            <input readOnly={true && !editable} 
                 type="text"  placeholder='24hr format' value={checkOut} onChange={e=> setCheckOut(e.target.value)}/>
             </div>
             <div>
             <h3 className='mt-2 ml-2 -mb-1'>Max Guests Allowed</h3>
-            <input 
+            <input readOnly={true && !editable} 
                 type="text" placeholder='4 Guests...' value={maxGuests} onChange={e=> setMaxGuests(e.target.value)}/>
                 
             </div>
         </div>
-        <button className='primary mt-4 '>Save</button>
+        <button disabled={true && !editable} className='primary mt-4 disabled:bg-slate-500'>Save</button>
         </form>
     </div>
     </>
