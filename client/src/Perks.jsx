@@ -19,34 +19,34 @@ const Perks = ({selected, onChange}) => {
   return (
     <>
         <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-            <input type='checkbox' onChange={(e) => {
+            <input type='checkbox' checked={selected.includes("Free Wifi")}   onChange={(e) => {
               handleCBClick(e.target.checked, "Free Wifi");
             }} />
             <FaWifi />
             <span>Free Wifi</span>
             </label> 
             <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-            <input type='checkbox' onChange={(e) => handleCBClick(e.target.checked, "Hot Water")}/>
+            <input type='checkbox' checked={selected.includes("Hot Water")} onChange={(e) => handleCBClick(e.target.checked, "Hot Water")}/>
             <GiShower />
             <span>Hot Water</span>
             </label>
             <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-            <input type='checkbox' onChange={(e) => handleCBClick( e.target.checked, "Free Parking Spot")}/>
+            <input type='checkbox' checked={selected.includes("Free Parking Spot")} onChange={(e) => handleCBClick( e.target.checked, "Free Parking Spot")}/>
             <FaCar />
             <span>Free Parking Spot</span>
             </label>
             <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-            <input type='checkbox' onChange={(e) => handleCBClick(e.target.checked, "Dining")}/>
+            <input type='checkbox' checked={selected.includes("Dining")} onChange={(e) => handleCBClick(e.target.checked, "Dining")}/>
             <MdOutlineFastfood />
             <span>Dining</span>
             </label>
             <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-            <input type='checkbox' onChange={(e) => handleCBClick(e.target.checked, "TV")}/>
+            <input type='checkbox' checked={selected.includes("TV")} onChange={(e) => handleCBClick(e.target.checked, "TV")}/>
             <FaDisplay />
             <span>TV</span>
             </label>
             <label className="p-4 border flex gap-2 items-center rounded-2xl cursor-pointer">
-            <input type='checkbox'onChange={(e) => handleCBClick(e.target.checked, "Pool")}/>
+            <input type='checkbox' checked={selected.includes("Pool")} onChange={(e) => handleCBClick(e.target.checked, "Pool")}/>
             <MdPool />
             <span>Pool</span>
         </label>
