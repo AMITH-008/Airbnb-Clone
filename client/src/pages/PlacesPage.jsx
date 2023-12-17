@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { IoMdAdd } from "react-icons/io";
 
@@ -8,6 +8,16 @@ import AccountNavPage from './AccountNavPage';
 
 
 const PlacesPage = () => {
+  const [places, setPlaces] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const {data} = await axios.get("/myPlaces");
+      console.log(data);
+      setPlaces(data);
+    }
+    fetchData();
+  }, [])
   
   return (
     <div>
@@ -18,6 +28,22 @@ const PlacesPage = () => {
               <IoMdAdd className='font-extrabold text-xl' />
               Add new places
           </Link>
+        </div>
+        <div className='mt-4'>
+          {
+            places.length > 0 && places.map(place => (
+              <Link to={'/account/places/'+place._id} className='cursor-pointer bg-gray-100 p-4 rounded-2xl flex justify-around gap-4'>
+                <div className='w-32 h-32 bg-gray-300 shrink-0'>
+                  {place.pics.length > 0 && 
+                  <img  src={"http://localhost:3000/uploads/"+place.pics[0]} alt="Image" />}
+                </div>
+                <div className='grow-0 shrink'>
+                  <h2 className='text-xl font-semibold'>{place.title}</h2>
+                  <p className='text-sm mt-2'>{place.description}</p>
+                </div>
+              </Link>
+            ))
+          }
         </div>
     </div>
   )

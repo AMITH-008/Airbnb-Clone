@@ -165,7 +165,17 @@ app.post("/places", (request, response) => {
         response.json(null);
     }
     
-})
+});
+
+app.get('/myPlaces', (request, response) => {
+    const {bookapp} = request.cookies;
+    if(bookapp) {
+        jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user)=> {
+            const {id} = user;
+            response.json(await Place.find({ownner:id}))
+        })
+    }
+});
 
 app.listen(3000, () => {
     console.log("Server up and running on port 3000");
