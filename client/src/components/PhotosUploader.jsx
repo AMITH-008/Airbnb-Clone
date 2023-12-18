@@ -39,6 +39,10 @@ const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
         
       }
 
+    const removePhoto = (pic) => {
+      onChange([...addedPhotos].filter(item => item !== pic));
+    }
+
   return (
     <>
         <div className='flex gap-2'>
@@ -59,7 +63,7 @@ const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
               {addedPhotos.length > 0 && addedPhotos.map(pic => (
                 <div className='h-32 flex relative' key={pic}>
                   <img className='rounded-2xl w-full object-cover' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
-                  <button className='absolute right-2 top-2 cursor-pointer p-1 bg-opacity-10'>
+                  <button onClick={() => removePhoto(pic)} className='absolute right-2 top-2 cursor-pointer p-1 bg-opacity-10'>
                     <FaRegTrashAlt className='text-white' />
                   </button>
                 </div>
