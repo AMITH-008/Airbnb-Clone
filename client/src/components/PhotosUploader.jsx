@@ -1,5 +1,5 @@
 import React, {  useState } from 'react'
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaCloudUploadAlt, FaRegTrashAlt } from "react-icons/fa";
 import axios from 'axios';
 
 const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
@@ -57,8 +57,11 @@ const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
             
             <div className='grid grid-cols-3 gap-2 items-center lg:grid-cols-6 md:grid-cols-4 mt-2'>
               {addedPhotos.length > 0 && addedPhotos.map(pic => (
-                <div className='h-32 flex' key={pic}>
+                <div className='h-32 flex relative' key={pic}>
                   <img className='rounded-2xl w-full object-cover' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
+                  <button className='absolute right-2 top-2 cursor-pointer p-1 bg-opacity-10'>
+                    <FaRegTrashAlt className='text-white' />
+                  </button>
                 </div>
               ))}
               <label className='flex h-32 gap-2 justify-center items-center border bg-transparent rounded-full p-4  mt-2 cursor-pointer'>
