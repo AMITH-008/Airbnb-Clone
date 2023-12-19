@@ -23,19 +23,18 @@ const PlacesPage = () => {
     <div>
       <AccountNavPage />
         <div className='text-center'>
-          <h1>List Of All Added Places</h1>
           <Link className='bg-primary text-white py-2 px-6 rounded-full inline-flex items-center gap-1' to={'/account/places/new'}>
               <IoMdAdd className='font-extrabold text-xl' />
               Add new places
           </Link>
         </div>
-        <div className='mt-4'>
+        <div className='mt-4 flex flex-col gap-2'>
           {
             places.length > 0 && places.map(place => (
               <Link to={'/account/places/'+place._id} className='cursor-pointer bg-gray-100 p-4 rounded-2xl flex justify-around gap-4'>
-                <div className='flex rounded-lg w-32 h-32 bg-gray-300 shrink-0'>
+                <div className='flex grow rounded-lg w-32 h-32 bg-gray-300 shrink-0'>
                   {place.pics.length > 0 && 
-                  <img className='object-cover rounded-lg'  src={"http://localhost:3000/uploads/"+place.pics[0]} alt="Image" />}
+                  <img className=' rounded-lg'  src={"http://localhost:3000/uploads/"+place.pics[0]} alt="Image" />}
                 </div>
                 <div className='grow-0 shrink'>
                   <h2 className='text-xl font-semibold'>{place.title}</h2>

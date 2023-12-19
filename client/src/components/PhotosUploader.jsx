@@ -1,5 +1,5 @@
 import React, {  useState } from 'react'
-import { FaCloudUploadAlt, FaRegTrashAlt } from "react-icons/fa";
+import { FaCloudUploadAlt, FaRegTrashAlt, FaStar , FaRegStar} from "react-icons/fa";
 import axios from 'axios';
 
 const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
@@ -39,8 +39,15 @@ const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
         
       }
 
-    const removePhoto = (pic) => {
-      onChange([...addedPhotos].filter(item => item !== pic));
+    const removePhoto = (event, pic) => {
+      event.preventDefault();
+      setAddedPhotos([...addedPhotos].filter(item => item !== pic));
+    }
+
+    const setDisplayPhoto = (event, pic) => {
+      event.preventDefault();
+      const rest = addedPhotos.filter(photo => photo !== pic);
+      setAddedPhotos([pic, ...rest]);
     }
 
   return (
@@ -63,8 +70,12 @@ const PhotosUploader = ({addedPhotos, setAddedPhotos}) => {
               {addedPhotos.length > 0 && addedPhotos.map(pic => (
                 <div className='h-32 flex relative' key={pic}>
                   <img className='rounded-2xl w-full object-cover' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
-                  <button onClick={() => removePhoto(pic)} className='absolute right-2 top-2 cursor-pointer p-1 bg-opacity-10'>
+                  <button onClick={(ev) => removePhoto(ev, pic)} className='absolute right-2 top-2 cursor-pointer p-1 bg-slate-800 bg-opacity-6'>
                     <FaRegTrashAlt className='text-white' />
+                  </button>
+                  <button onClick={(ev) => setDisplayPhoto(ev, pic)} className='absolute left-2 top-2 cursor-pointer p-1 bg-opacity-10'>
+                    {pic === addedPhotos[0]?  <FaStar className='text-white text-xl' />: <FaRegStar className='text-white text-xl' /> }
+                    
                   </button>
                 </div>
               ))}
