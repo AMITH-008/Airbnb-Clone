@@ -42,6 +42,7 @@ const PlacesFormPage = () => {
           setMaxGuests(data.maxGuests);
           setPerks(data.perks);
           setAddedPhotos(data.pics);
+          setPrice(data.price);
           if(data.ownner !== user._id.toString()) {
             setEditable(false);
           }
@@ -132,7 +133,7 @@ const PlacesFormPage = () => {
         <textarea value={extraInfo}  onChange={e=> setExtraInfoe(e.target.value)}/>
         {preInput("Check In & Out time, max guests", "Add Check In And Check Out Time, remember to have some time between consecutive guests for cleaning of room.")}
         
-        <div className='grid gap-2 sm:grid-cols-3'>
+        <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             <div>
             <h3 className='mt-2 ml-2 -mb-1'>Check-In</h3>
             <input readOnly={true && !editable} 
