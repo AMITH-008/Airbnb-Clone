@@ -141,7 +141,7 @@ app.post("/places", (request, response) => {
         extraInfo,
         checkIn,checkOut,
         maxGuests,
-        perks, addedPhotos } = request.body;
+        perks, addedPhotos, price } = request.body;
     if(bookapp) {
         jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
             if(err) {
@@ -157,7 +157,8 @@ app.post("/places", (request, response) => {
                 checkIn: checkIn,
                 checkOut: checkOut,
                 maxGuests: maxGuests,
-                pics: addedPhotos
+                pics: addedPhotos,
+                price: price
             })
             response.json(placeDoc);
         })
@@ -193,7 +194,7 @@ app.put('/places/:id', async (request, response) => {
         extraInfo,
         checkIn,checkOut,
         maxGuests,
-        perks, addedPhotos } = request.body;
+        perks, addedPhotos, price } = request.body;
     if(bookapp) {
         jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
             if(err) {
@@ -209,7 +210,8 @@ app.put('/places/:id', async (request, response) => {
                 checkIn: checkIn,
                 checkOut: checkOut,
                 maxGuests: maxGuests,
-                pics: addedPhotos
+                pics: addedPhotos,
+                price: price
             })
             response.json(placeDoc);
         })
@@ -217,6 +219,10 @@ app.put('/places/:id', async (request, response) => {
         response.json(null);
     }
 
+})
+
+app.get('/allPlaces', async (request, response) => {
+    response.status(200).json(await Place.find());
 })
 
 app.listen(3000, () => {

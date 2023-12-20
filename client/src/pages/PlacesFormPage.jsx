@@ -23,6 +23,7 @@ const PlacesFormPage = () => {
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [redirect,setRedirect] = useState(false);
     const [editable, setEditable] = useState(true);
+    const [price, setPrice] = useState(0);
 
     const {user} = useContext(UserContext);
     
@@ -79,7 +80,8 @@ const PlacesFormPage = () => {
             checkIn,checkOut,
             maxGuests,
             perks,
-            addedPhotos
+            addedPhotos,
+            price
           }
           const {data} = await axios.put("/places/"+id, placeData);
           console.log(data);
@@ -94,7 +96,8 @@ const PlacesFormPage = () => {
           checkIn,checkOut,
           maxGuests,
           perks,
-          addedPhotos
+          addedPhotos,
+          price
         }
       const {data} = await axios.post("/places", placeData);
       console.log(data);
@@ -144,6 +147,12 @@ const PlacesFormPage = () => {
             <h3 className='mt-2 ml-2 -mb-1'>Max Guests Allowed</h3>
             <input readOnly={true && !editable} 
                 type="text" placeholder='4 Guests...' value={maxGuests} onChange={e=> setMaxGuests(e.target.value)}/>
+                
+            </div>
+            <div>
+            <h3 className='mt-2 ml-2 -mb-1'>Price Per Night<span>($)</span></h3>
+            <input readOnly={true && !editable} 
+                type="text" placeholder='4 Guests...' value={price} onChange={e=> setPrice(e.target.value)}/>
                 
             </div>
         </div>
