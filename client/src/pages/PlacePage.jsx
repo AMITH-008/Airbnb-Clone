@@ -2,6 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { TbGridDots } from "react-icons/tb";
+import { AiOutlineClose } from "react-icons/ai";
+import { RiMapPinLine } from "react-icons/ri";
+
+
 
 
 const PlacePage = () => {
@@ -20,16 +24,42 @@ const PlacePage = () => {
 
   if(!place) return;
 
+  if(showAll) {
+    return( 
+    <div className=' absolute inset-0 min-w-full  min-h-screen '>
+      <div className='bg-gray-200 py-4 px-2 fixed min-w-full flex justify-between'>
+          <h1 className='text-xl font-bold underline'>{place.title}</h1>
+          <button onClick={() => setShowAll(false)} className='flex items-center gap-1 p-2 rounded-full shadow shadow-slate-900 top-2 right-2'>
+            Close Photos <AiOutlineClose /> 
+          </button>
+        </div>
+      <div className='grid gap-4 p-4 bg-gray-100'>
+      {
+        place?.pics?.length > 0 && 
+        place.pics.map(pic => (
+          <div>
+            <img className='object-cover w-full' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
+          </div>
+        ))
+      }
+      </div>
+    </div>
+    )
+  }
+
   return (
     <div className='mt-4 py-4 bg-gray-100 -mx-8 px-8'>
         <h1 className='text-2xl'>{place.title}</h1>
-        <a className="block underline font-semibold" target='_blank' href={"https://maps.google.com/?q="+place.address}>{place.address}</a>
+        <a className="flex items-center gap-1 my-3 underline font-semibold" target='_blank' href={"https://maps.google.com/?q="+place.address}>
+          <RiMapPinLine />
+          {place.address}
+        </a>
         <div className='relative'>
-          <div className="grid gap-2 grid-cols-[2fr_1fr] ">
+          <div className="grid gap-2 grid-cols-[2fr_1fr] border border-gray-400 rounded-2xl overflow-hidden">
             <div>
               {place.pics?.[0] && (
                 
-                  <img className='aspect-square object-cover' src={"http://localhost:3000/uploads/"+place.pics[0]} alt=''/>
+                  <img className='aspect-square object-cover w-full' src={"http://localhost:3000/uploads/"+place.pics[0]} alt=''/>
               )}
             </div>
             <div className='grid '>
@@ -45,7 +75,7 @@ const PlacePage = () => {
               
             </div>
           </div>
-          <button className='absolute bottom-2 right-2 p-2 bg-white border border-gray-500 hover:shadow-xl rounded-full font-serif flex items-center gap-1'>
+          <button onClick={event => setShowAll(true)} type='button' className='absolute bottom-2 right-2 p-2 bg-white border border-gray-500 hover:shadow-xl rounded-full font-serif flex items-center gap-1'>
             <TbGridDots  />
             Show More Photos
           </button>
