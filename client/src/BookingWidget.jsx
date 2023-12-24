@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import  { differenceInCalendarDays } from 'date-fns';
+import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 const BookingWidget = ({place}) => {
   const [checkIn, setCheckIn] = useState(new Date().toISOString().slice(0,10));
   const [checkOut, setCheckOut] = useState('');
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
+  const [redirect, setRedirect] = useState('');
 
   let numberOfNights = 0;
 
@@ -32,6 +35,26 @@ const BookingWidget = ({place}) => {
 
   const handleNameChange = (event) => {
     setName(event.target.value);
+  }
+
+  const handleBooking = async (event) => {
+    event.preventDefault();
+    const bookingData = {
+      checkIn,
+      checkOut,
+      numberOfGuests,
+      phone,
+      place:place._id,
+      name,
+      price: numberOfNights * place.price
+    }
+    const {data} = await axios.post("/booking", bookingData);
+    console.log(data);
+    setRedirect(`/account/bookings/${data._id}`);
+  }
+
+  if(redirect) {
+    return <Navigate to={redirect} />
   }
 
   return (
@@ -64,7 +87,7 @@ const BookingWidget = ({place}) => {
                       <input 
                       className='border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500' 
                       type='number' 
-                      value={1} 
+                      value={numberOfGuests} 
                       onChange={handleNumberOfGuestsChange}/>
                   </div>
                   {numberOfNights > 0 && (
@@ -83,7 +106,7 @@ const BookingWidget = ({place}) => {
                           <input 
                           className='border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500' 
                           type='tel' 
-                          value={number}
+                          value={phone}
                           placeholder='Phone Number' 
                           onChange={handleNumberChange}/>
                         </div>
@@ -92,7 +115,7 @@ const BookingWidget = ({place}) => {
                     
                   )}
                 </div>
-                <button className='mt-4 primary border text-white hover:border-primary hover:bg-white hover:text-primary'>
+                <button onClick={handleBooking} className='mt-4 primary border text-white hover:border-primary hover:bg-white hover:text-primary'>
                   Book this place {
                     checkIn && checkOut && (
                       <span>

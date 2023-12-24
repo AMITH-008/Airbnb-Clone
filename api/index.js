@@ -11,6 +11,7 @@ import {dirname} from 'path'
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import Place from './models/Place.js'
+import BookingModel from './models/Booking.js';
 
 const __filename = fileURLToPath(import.meta.url)
 
@@ -223,6 +224,19 @@ app.put('/places/:id', async (request, response) => {
 
 app.get('/allPlaces', async (request, response) => {
     response.status(200).json(await Place.find());
+})
+
+app.post("/booking" , (request, response) => {
+    //Further Development allow only the logged in users to book a place
+    const {place, checkIn, checkOut, numberOfGuests, name, phone , price} = request.body;
+    BookingModel.create({
+        place, checkIn, checkOut, numberOfGuests, name, phone , price
+    }).then((doc) => {
+       response.status(202).json(doc)
+    }).catch(err => {
+        response.status(202).json(err);
+    })
+
 })
 
 app.listen(3000, () => {
