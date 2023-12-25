@@ -251,7 +251,7 @@ function getUserDataFromToken ( token ) {
 app.get("/bookings" ,  async (request, response) => {
     const {bookapp} = request.cookies;
     const userData = await getUserDataFromToken(bookapp);
-    response.json(await BookingModel.find({userID:userData.id}))
+    response.json(await BookingModel.find({userID:userData.id}).populate('place'))
 
 });
 
