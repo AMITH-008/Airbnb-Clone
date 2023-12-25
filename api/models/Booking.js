@@ -24,6 +24,10 @@ const bookingSchema = new mongoose.Schema({
     },
     price: {
         type: Number
+    },
+    userID: {
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
     }
 });
 
