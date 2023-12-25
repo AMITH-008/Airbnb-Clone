@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import AccountNavPage from './AccountNavPage'
 import axios from 'axios'
+import BookingsPageItem from '../BookingsPageItem'
 
 const BookingsPage = () => {
 
@@ -22,9 +23,7 @@ const BookingsPage = () => {
         <div>
             {
                 bookings?.length>0 && bookings.map(booking => (
-                    <div>
-                        {booking.checkIn} - {booking.checkOut}
-                    </div>
+                    <BookingsPageItem booking={booking} />
                 ))
             }
         </div>
