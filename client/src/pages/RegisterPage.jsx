@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import OAuth from '../components/OAuth';
 
 const RegisterPage = () => {
   //This is Register Page.
@@ -47,6 +48,9 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)} />
           <button className='primary'> Register </button>
         </form>
+        <div>
+          <OAuth />
+        </div>
         <div className='text-center font-semibold py-2 text-gray-400'>
           Already have an account?  
            <Link to={'/login'} className=' mx-1 underline text-black font-bold'>Log In</Link> 
