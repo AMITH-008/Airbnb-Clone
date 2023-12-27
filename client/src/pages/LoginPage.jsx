@@ -13,7 +13,7 @@ const LoginPage = () => {
     try{
       console.log(email);
       console.log(password);
-      const response = await axios.post('/login', {
+      const response = await axios.post('/api/auth/login', {
         email,
         password
       });
