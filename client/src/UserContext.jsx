@@ -12,7 +12,7 @@ export const UserContextProvider = ({children}) => {
         
         if(!user) {
             
-            axios.get('/profile').then(({data}) => {
+            axios.get('/api/user/profile').then(({data}) => {
                 setUser(data);
                 setLoading(false);
             }).catch(err => {

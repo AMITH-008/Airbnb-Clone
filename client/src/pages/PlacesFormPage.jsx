@@ -100,7 +100,7 @@ const PlacesFormPage = () => {
           addedPhotos,
           price
         }
-      const {data} = await axios.post("/places", placeData);
+      const {data} = await axios.post("/api/user/places", placeData);
       console.log(data);
       setRedirect(true);
     }
