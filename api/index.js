@@ -15,6 +15,7 @@ import BookingModel from './models/Booking.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import placeRouter from './routes/placeRoutes.js';
+import bookingRouter from './routes/bookingRoutes.js';
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -50,6 +51,8 @@ app.use('/api/user', userRouter);
 
 app.use('/api/places', placeRouter);
 
+app.use('/api/bookings', bookingRouter);
+
 
 app.post('/uploadPhotoByLink', async (request, response) => {
 
@@ -76,82 +79,6 @@ app.post('/uploadPhotos', photosMiddleware.array("photos", 40),(request, respons
 });
 
 
-
-
-// app.get('/places/:id', async (request, response)=> {
-//     const {id} = request.params;
-//     response.status(200).json(await Place.findById(id));
-// });
-
-// app.put('/places/:id', async (request, response) => {
-
-//     const {bookapp} = request.cookies;
-//     const {id} = request.params;
-//     const {title,
-//         address,
-//         description,
-//         extraInfo,
-//         checkIn,checkOut,
-//         maxGuests,
-//         perks, addedPhotos, price } = request.body;
-//     if(bookapp) {
-//         jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
-//             if(err) {
-//                 throw err;
-//             }
-//             const placeDoc = await Place.findByIdAndUpdate(id,{
-//                 ownner:user.id,
-//                 title: title,
-//                 address: address,
-//                 description: description,
-//                 extraInformation:extraInfo,
-//                 perks: perks,
-//                 checkIn: checkIn,
-//                 checkOut: checkOut,
-//                 maxGuests: maxGuests,
-//                 pics: addedPhotos,
-//                 price: price
-//             })
-//             response.json(placeDoc);
-//         })
-//     } else {
-//         response.json(null);
-//     }
-
-// })
-
-// app.get('/allPlaces', async (request, response) => {
-//     response.status(200).json(await Place.find());
-// })
-
-app.post("/booking" , (request, response) => {
-    //Further Development allow only the logged in users to book a place
-    const {place, checkIn, checkOut, numberOfGuests, name, phone , price, userID} = request.body;
-    BookingModel.create({
-        place, checkIn, checkOut, numberOfGuests, name, phone , price, userID
-    }).then((doc) => {
-       response.status(202).json(doc)
-    }).catch(err => {
-        response.status(202).json(err);
-    })
-
-})
-
-function getUserDataFromToken ( token ) {
-    return new Promise((resolve, reject) => {
-        jwt.verify(token, process.env.JWT_SECRET_KEY, {}, async (err, userData)=> {
-            if(err) reject(err);
-            resolve(userData);
-        });
-    })
-}
-
-app.get("/bookings" ,  async (request, response) => {
-    const {bookapp} = request.cookies;
-    const userData = await getUserDataFromToken(bookapp);
-    response.json(await BookingModel.find({userID:userData.id}).populate('place'))
-
-});
 
 app.listen(3000, () => {
     console.log("Server up and running on port 3000");

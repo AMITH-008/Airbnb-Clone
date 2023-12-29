@@ -16,7 +16,7 @@ const PlacePage = () => {
   console.log(id);
   useEffect(() => {
     const fetchData = async () => {
-        const {data} = await axios.get("/places/"+id);
+        const {data} = await axios.get("/api/places/"+id);
         console.log(data);
         setPlace({...data});
     }

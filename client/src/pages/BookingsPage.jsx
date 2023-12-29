@@ -10,7 +10,7 @@ const BookingsPage = () => {
 
     useEffect(() => {
         const fetchAllBookings = async () => {
-            const {data} = await axios.get("/bookings");
+            const {data} = await axios.get("/api/bookings/myBookings");
             setBookings(data);
             console.log(data);
         }
