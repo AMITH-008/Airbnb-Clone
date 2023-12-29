@@ -14,6 +14,8 @@ import Place from './models/Place.js'
 import BookingModel from './models/Booking.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
+import placeRouter from './routes/placeRoutes.js';
+
 
 const __filename = fileURLToPath(import.meta.url)
 
@@ -46,6 +48,7 @@ app.use('/api/auth', authRouter);
 
 app.use('/api/user', userRouter);
 
+app.use('/api/places', placeRouter);
 
 
 app.post('/uploadPhotoByLink', async (request, response) => {
@@ -72,98 +75,54 @@ app.post('/uploadPhotos', photosMiddleware.array("photos", 40),(request, respons
     response.status(200).json(data);
 });
 
-app.post("/places", (request, response) => {
-
-    const {bookapp} = request.cookies;
-    const {title,
-        address,
-        description,
-        extraInfo,
-        checkIn,checkOut,
-        maxGuests,
-        perks, addedPhotos, price } = request.body;
-    if(bookapp) {
-        jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
-            if(err) {
-                throw err;
-            }
-            const placeDoc = await Place.create({
-                ownner:user.id,
-                title: title,
-                address: address,
-                description: description,
-                extraInformation:extraInfo,
-                perks: perks,
-                checkIn: checkIn,
-                checkOut: checkOut,
-                maxGuests: maxGuests,
-                pics: addedPhotos,
-                price: price
-            })
-            response.json(placeDoc);
-        })
-    } else {
-        response.json(null);
-    }
-    
-});
-
-app.get('/myPlaces', (request, response) => {
-    const {bookapp} = request.cookies;
-    if(bookapp) {
-        jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user)=> {
-            const {id} = user;
-            response.json(await Place.find({ownner:id}))
-        })
-    }
-});
 
 
-app.get('/places/:id', async (request, response)=> {
-    const {id} = request.params;
-    response.status(200).json(await Place.findById(id));
-});
 
-app.put('/places/:id', async (request, response) => {
+// app.get('/places/:id', async (request, response)=> {
+//     const {id} = request.params;
+//     response.status(200).json(await Place.findById(id));
+// });
 
-    const {bookapp} = request.cookies;
-    const {id} = request.params;
-    const {title,
-        address,
-        description,
-        extraInfo,
-        checkIn,checkOut,
-        maxGuests,
-        perks, addedPhotos, price } = request.body;
-    if(bookapp) {
-        jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
-            if(err) {
-                throw err;
-            }
-            const placeDoc = await Place.findByIdAndUpdate(id,{
-                ownner:user.id,
-                title: title,
-                address: address,
-                description: description,
-                extraInformation:extraInfo,
-                perks: perks,
-                checkIn: checkIn,
-                checkOut: checkOut,
-                maxGuests: maxGuests,
-                pics: addedPhotos,
-                price: price
-            })
-            response.json(placeDoc);
-        })
-    } else {
-        response.json(null);
-    }
+// app.put('/places/:id', async (request, response) => {
 
-})
+//     const {bookapp} = request.cookies;
+//     const {id} = request.params;
+//     const {title,
+//         address,
+//         description,
+//         extraInfo,
+//         checkIn,checkOut,
+//         maxGuests,
+//         perks, addedPhotos, price } = request.body;
+//     if(bookapp) {
+//         jwt.verify(bookapp, process.env.JWT_SECRET_KEY, {}, async (err, user) => {
+//             if(err) {
+//                 throw err;
+//             }
+//             const placeDoc = await Place.findByIdAndUpdate(id,{
+//                 ownner:user.id,
+//                 title: title,
+//                 address: address,
+//                 description: description,
+//                 extraInformation:extraInfo,
+//                 perks: perks,
+//                 checkIn: checkIn,
+//                 checkOut: checkOut,
+//                 maxGuests: maxGuests,
+//                 pics: addedPhotos,
+//                 price: price
+//             })
+//             response.json(placeDoc);
+//         })
+//     } else {
+//         response.json(null);
+//     }
 
-app.get('/allPlaces', async (request, response) => {
-    response.status(200).json(await Place.find());
-})
+// })
+
+// app.get('/allPlaces', async (request, response) => {
+//     response.status(200).json(await Place.find());
+// })
 
 app.post("/booking" , (request, response) => {
     //Further Development allow only the logged in users to book a place

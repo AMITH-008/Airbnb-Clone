@@ -31,7 +31,7 @@ const PlacesFormPage = () => {
     useEffect(()=> {
       if(id !== undefined) {
         const fetchPlace = async () => {
-          const {data} = await axios.get("/places/"+id);
+          const {data} = await axios.get("api/places/"+id);
           console.log(data);
           setTitle(data.title);
           setAddress(data.address);
@@ -84,7 +84,7 @@ const PlacesFormPage = () => {
             addedPhotos,
             price
           }
-          const {data} = await axios.put("/places/"+id, placeData);
+          const {data} = await axios.put("/api/places/"+id, placeData);
           console.log(data);
           setRedirect(true);
           return;
