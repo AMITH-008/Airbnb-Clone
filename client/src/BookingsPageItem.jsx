@@ -14,7 +14,7 @@ const BookingsPageItem = ({booking}) => {
             {
                 booking.place.pics?.length>0 && 
                 (
-                    <img className='object-cover' src={'http://localhost:3000/uploads/'+ booking.place.pics[0]} alt="Image" />
+                    <img className='object-cover' src={booking.place.pics[0]} alt="Image" />
                 )
             }
         </div>

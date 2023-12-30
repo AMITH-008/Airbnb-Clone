@@ -19,7 +19,7 @@ const IndexPage = () => {
             <div key={place._id}>
               <div className='bg-gray-500 rounded-2xl flex mb-2'>
                 {place.pics?.[0] && (
-                  <img className='rounded-2xl object-cover aspect-square' src={"http://localhost:3000/uploads/"+place.pics?.[0]} alt='' />
+                  <img className='rounded-2xl object-cover aspect-square' src={place.pics?.[0]} alt='' />
                 )}
               </div>
               

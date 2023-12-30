@@ -34,7 +34,7 @@ const PlacesPage = () => {
               <Link to={'/account/places/'+place._id} className='cursor-pointer bg-gray-100 p-4 rounded-2xl flex justify-around gap-4'>
                 <div className='flex grow rounded-lg w-32 h-32 bg-gray-300 shrink-0'>
                   {place.pics.length > 0 && 
-                  <img className='w-full rounded-lg'  src={"http://localhost:3000/uploads/"+place.pics[0]} alt="Image" />}
+                  <img className='w-full rounded-lg'  src={place.pics[0]} alt="Image" />}
                 </div>
                 <div className='grow-0 shrink'>
                   <h2 className='text-xl font-semibold'>{place.title}</h2>

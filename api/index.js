@@ -54,32 +54,6 @@ app.use('/api/places', placeRouter);
 app.use('/api/bookings', bookingRouter);
 
 
-app.post('/uploadPhotoByLink', async (request, response) => {
-
-    const link = request.body.link;
-    console.log(link);
-    const newName = "img"+Date.now() + '.jpg';
-    await download.image({
-        url:link,
-        dest: __dirname+'/uploads/'+newName,
-        timeout:10000
-    });
-    response.status(200).json({newName});
-});
-
-const photosMiddleware = multer({dest:'uploads/'})
-app.post('/uploadPhotos', photosMiddleware.array("photos", 40),(request, response) => {
-    const files = request.files;
-    const data = Array();
-    for(let i=0;i<files.length;i++) {
-        data[i] = files[i].filename;
-    }
-    console.log(data);
-    response.status(200).json(data);
-});
-
-
-
 app.listen(3000, () => {
     console.log("Server up and running on port 3000");
 })

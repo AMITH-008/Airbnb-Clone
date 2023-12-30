@@ -39,7 +39,7 @@ const PlacePage = () => {
         place?.pics?.length > 0 && 
         place.pics.map(pic => (
           <div key={pic}cursor-pointer >
-            <img className='object-cover w-full' src={"http://localhost:3000/uploads/"+pic} alt="Image" />
+            <img className='object-cover w-full' src={pic} alt="Image" />
           </div>
         ))
       }
@@ -60,17 +60,17 @@ const PlacePage = () => {
             <div>
               {place.pics?.[0] && (
                 
-                  <img   onClick={() => setShowAll(true)} className='cursor-pointer aspect-square object-cover w-full' src={"http://localhost:3000/uploads/"+place.pics[0]} alt=''/>
+                  <img   onClick={() => setShowAll(true)} className='cursor-pointer aspect-square object-cover w-full' src={place.pics[0]} alt=''/>
               )}
             </div>
             <div className='grid '>
               
                 {place.pics?.[1] && (
-                  <img onClick={() => setShowAll(true)}  className='cursor-pointer aspect-square object-cover' src={"http://localhost:3000/uploads/"+place.pics[1]} alt=''/>
+                  <img onClick={() => setShowAll(true)}  className='cursor-pointer aspect-square object-cover' src={place.pics[1]} alt=''/>
                 )}
                 <div className= 'overflow-hidden'>
                 {place.pics?.[2] && (
-                    <img onClick={() => setShowAll(true)} className='cursor-pointer relative top-2 aspect-square object-cover' src={"http://localhost:3000/uploads/"+place.pics[2]} alt=''/>
+                    <img onClick={() => setShowAll(true)} className='cursor-pointer relative top-2 aspect-square object-cover' src={place.pics[2]} alt=''/>
                   )}
                 </div>
               
